@@ -32,19 +32,15 @@ public class SimpleRSSParser {
         String desc;
         
         while ((desc = getTextBetween(tmp, "<description><![CDATA[", "]]></description>")) != "") {
-			// Titeln för en nyhet ligger mellan taggarna <title>. Så länge som
-			// ovan returnerar något annat än en tom sträng finns fler nyheter
+			
                         
                                                 
 			Description.append(removeCDATA(desc) + "<br>");
                         
-			// Tar reda på var denna nyhet (item) slutar
+			
 			int index = tmp.indexOf("</item>");
 
-			// Skapar en delsträng av kvarvarande innehåll med
-			// början från där denna nyhet slutar. Adderar ett eftersom
-			// </item> annars ligger kvar i den nya strängen vilket gör
-			// att samma nyhet (title) även den finns kvar i strängen.
+			
 			tmp = tmp.substring(index + 1);
 		}
 
@@ -100,10 +96,7 @@ public class SimpleRSSParser {
         
             int index = tmp.indexOf("</item>");
 
-			// Skapar en delsträng av kvarvarande innehåll med
-			// början från där denna nyhet slutar. Adderar ett eftersom
-			// </item> annars ligger kvar i den nya strängen vilket gör
-			// att samma nyhet (title) även den finns kvar i strängen.
+			
             tmp = tmp.substring(index + 1);
         }
         
@@ -146,8 +139,7 @@ public class SimpleRSSParser {
 
 		String link;
 		while ((link = getTextBetween(tmp, "<link>", "</link>")) != "") {
-			// Titeln för en nyhet ligger mellan taggarna <title>. Så länge som
-			// ovan returnerar något annat än en tom sträng finns fler nyheter
+			
                         
                         if (link.contains(".mp3")) {                        
 			sound.append(removeCDATA(link) + "<br>");
@@ -185,10 +177,7 @@ public class SimpleRSSParser {
 			// Tar reda på var denna nyhet (item) slutar
 			int index = tmp.indexOf("</item>");
 
-			// Skapar en delsträng av kvarvarande innehåll med
-			// början från där denna nyhet slutar. Adderar ett eftersom
-			// </item> annars ligger kvar i den nya strängen vilket gör
-			// att samma nyhet (title) även den finns kvar i strängen.
+			
 			tmp = tmp.substring(index + 1);
 		}
 
@@ -198,14 +187,12 @@ public class SimpleRSSParser {
     public String getSoundAcast() {
         StringBuffer sound = new StringBuffer();
 
-		// Varje nyhet ligger i separata <item>-taggar. Vi skapar därför
-		// en ny delsträng av content med början vid första taggen <item>
+		
 		String tmp = content.substring(content.indexOf("<item>"));
 
 		String link;
 		while ((link = getTextBetween(tmp, "<enclosure url=\"", "\" length")) != "") {
-			// Titeln för en nyhet ligger mellan taggarna <title>. Så länge som
-			// ovan returnerar något annat än en tom sträng finns fler nyheter
+			
                         
                         if (link.contains(".mp3")) {                        
 			sound.append((link) + "<br>");
@@ -213,10 +200,7 @@ public class SimpleRSSParser {
 			// Tar reda på var denna nyhet (item) slutar
 			int index = tmp.indexOf("</item>");
 
-			// Skapar en delsträng av kvarvarande innehåll med
-			// början från där denna nyhet slutar. Adderar ett eftersom
-			// </item> annars ligger kvar i den nya strängen vilket gör
-			// att samma nyhet (title) även den finns kvar i strängen.
+			
 			tmp = tmp.substring(index + 1);
 		}
                 
@@ -227,8 +211,7 @@ public class SimpleRSSParser {
     public String getNews() {
 		StringBuffer news = new StringBuffer();
 
-		// Varje nyhet ligger i separata <item>-taggar. Vi skapar därför
-		// en ny delsträng av content med början vid första taggen <item>
+		
 		String tmp = content.substring(content.indexOf("<item>"));
 
 		String title;
@@ -241,10 +224,7 @@ public class SimpleRSSParser {
 			// Tar reda på var denna nyhet (item) slutar
 			int index = tmp.indexOf("</item>");
 
-			// Skapar en delsträng av kvarvarande innehåll med
-			// början från där denna nyhet slutar. Adderar ett eftersom
-			// </item> annars ligger kvar i den nya strängen vilket gör
-			// att samma nyhet (title) även den finns kvar i strängen.
+			
 			tmp = tmp.substring(index + 1);
 		}
                 String formatted = news.toString();
@@ -255,9 +235,7 @@ public class SimpleRSSParser {
 		return formatted;
 	}
     
-    private String removeCDATA(String text) {
-		// Vissa RSS-flöden lägger sin text i CDATA-sektioner.
-		// Vi kontrollerar därför om så är fallet för denna
+    private String removeCDATA(String text) {		
 
 		String cdata = getTextBetween(text, "CDATA[", "]");
 		return cdata.length() > 0 ? cdata : text;
